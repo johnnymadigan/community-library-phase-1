@@ -6,7 +6,7 @@ namespace MemberApp
     {
         static void Main(string[] args)
         {
-
+            Console.WriteLine("test");
             MemberCollection col = new MemberCollection(10);
 
 
