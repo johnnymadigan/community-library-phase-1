@@ -1,11 +1,12 @@
 ﻿//CAB301 assessment 1 - 2022
 //The implementation of MemberCollection ADT
-
 using System;
 using System.Linq;
 
+
 namespace MemberApp
 {
+
     class MemberCollection : IMemberCollection
     {
         // Fields
@@ -24,6 +25,9 @@ namespace MemberApp
         // pre-condition: nil
         // post-condition: return the number of members in this member collection and this member collection remains unchanged
         public int Number { get { return count; } }
+
+
+
 
         // Constructor - to create an object of member collection 
         // Pre-condition: capacity > 0
@@ -62,47 +66,47 @@ namespace MemberApp
         // Post-condition: a new member is added to the member collection and the members are sorted in ascending order by their full names;
         // No duplicate will be added into this the member collection
         public void Add(IMember member)
-        {
-            // To be implemented by students in Phase 1
-
-            // Must be room for new member
-            if (!IsFull())
             {
-                int pos = count - 1;
+                // To be implemented by students in Phase 1
 
-                // Linear time O(n) sorting
-                while (pos >= 0)
+                // Must be room for new member
+                if (!IsFull())
                 {
-                    // Check if new member's name comes before current in the dictionary
-                    int order = member.CompareTo(members[pos]);
+                    int pos = count - 1;
 
-                    // New member comes before, shift members up and loop
-                    if (order == -1)
+                    // Linear time O(n) sorting
+                    while (pos >= 0)
                     {
-                        members[pos + 1] = members[pos];
-                        pos--;
-                    }
-                    // New member comes after, insert into empty position and break loop
-                    else if (order == 1)
-                    {
-                        members[pos + 1] = (Member)member;
-                        count++;
-                        Console.WriteLine($"Successfully added '{member.FirstName} {member.LastName}'");
-                        break;
-                    }
-                    // New member is a duplicate, do not add and break loop
-                    else
-                    {
-                        Console.WriteLine($"Could not '{member.FirstName} {member.LastName}' - duplicate");
-                        break;
+                        // Check if new member's name comes before current in the dictionary
+                        int order = member.CompareTo(members[pos]);
+
+                        // New member comes before, shift members up and loop
+                        if (order == -1)
+                        {
+                            members[pos + 1] = members[pos];
+                            pos--;
+                        }
+                        // New member comes after, insert into empty position and break loop
+                        else if (order == 1)
+                        {
+                            members[pos + 1] = (Member)member;
+                            count++;
+                            Console.WriteLine($"Successfully added '{member.FirstName} {member.LastName}'");
+                            break;
+                        }
+                        // New member is a duplicate, do not add and break loop
+                        else
+                        {
+                            Console.WriteLine($"Could not '{member.FirstName} {member.LastName}' - duplicate");
+                            break;
+                        }
                     }
                 }
+                else
+                {
+                    Console.WriteLine($"Could not add '{member.FirstName} {member.LastName}' - collection full");
+                }
             }
-            else
-            {
-                Console.WriteLine($"Could not add '{member.FirstName} {member.LastName}' - collection full");
-            }
-        }
 
 
         // █▀▄ █▀▀ █░░ █▀▀ ▀█▀ █▀▀
