@@ -86,21 +86,23 @@ namespace MemberApp
                             members[pos + 1] = members[pos];
                             pos--;
                         }
-                        // New member comes after, insert into empty position and break loop
+                        // New member comes after, break out of loop to insert
                         else if (order == 1)
                         {
-                            members[pos + 1] = (Member)member;
-                            count++;
-                            Console.WriteLine($"Successfully added '{member.FirstName} {member.LastName}'");
                             break;
                         }
-                        // New member is a duplicate, do not add and break loop
+                        // New member is a duplicate, return immediately to skip insertion
                         else
                         {
                             Console.WriteLine($"Could not '{member.FirstName} {member.LastName}' - duplicate");
-                            break;
+                            return;
                         }
                     }
+
+                    // Insert if not a duplicate
+                    members[pos + 1] = (Member)member;
+                    count++;
+                    Console.WriteLine($"Successfully added '{member.FirstName} {member.LastName}'");
                 }
                 else
                 {
