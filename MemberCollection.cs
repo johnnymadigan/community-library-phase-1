@@ -1,5 +1,6 @@
 ﻿//CAB301 assessment 1 - 2022
 //The implementation of MemberCollection ADT
+
 using System;
 using System.Linq;
 
@@ -23,9 +24,6 @@ namespace MemberApp
         // pre-condition: nil
         // post-condition: return the number of members in this member collection and this member collection remains unchanged
         public int Number { get { return count; } }
-
-
-
 
         // Constructor - to create an object of member collection 
         // Pre-condition: capacity > 0
@@ -57,8 +55,9 @@ namespace MemberApp
             return count == 0;
         }
 
+        // ▄▀█ █▀▄ █▀▄
+        // █▀█ █▄▀ █▄▀ @author: Johnny Madigan
         // Add a new member to this member collection
-        // @author: Johnny Madigan
         // Pre-condition: this member collection is not full
         // Post-condition: a new member is added to the member collection and the members are sorted in ascending order by their full names;
         // No duplicate will be added into this the member collection
@@ -66,177 +65,144 @@ namespace MemberApp
         {
             // To be implemented by students in Phase 1
 
-            // if first member
+            // Must be room for new member
             if (!IsFull())
             {
-                int pos = count - 1; // position of the last member in collection
+                int pos = count - 1;
 
-                // SORT
                 // Linear time O(n) sorting
                 while (pos >= 0)
                 {
-                    // Check if new member's last name comes before, after, or identical to current member's
-                    int compResult = Compare(member.LastName, members[pos].LastName);
+                    // Check if new member's name comes before current in the dictionary
+                    int order = member.CompareTo(members[pos]);
 
-                    // If last names are identical, check first names
-                    if (compResult == 0) compResult = Compare(member.FirstName, members[pos].FirstName);
-
-                    // If new member should come before second, shift down, otherwise break out of loop to insert
-                    if (compResult == -1)
+                    // New member comes before, shift members up and loop
+                    if (order == -1)
                     {
                         members[pos + 1] = members[pos];
                         pos--;
-                    } 
+                    }
+                    // New member comes after, insert into empty position and break loop
+                    else if (order == 1)
+                    {
+                        members[pos + 1] = (Member)member;
+                        count++;
+                        Console.WriteLine($"Successfully added '{member.FirstName} {member.LastName}'");
+                        break;
+                    }
+                    // New member is a duplicate, do not add and break loop
                     else
                     {
+                        Console.WriteLine($"Could not '{member.FirstName} {member.LastName}' - duplicate");
                         break;
                     }
                 }
-
-                // Insert member in the empty slot, keep track of count
-                members[pos + 1] = (Member)member;
-                count++;
-                Console.WriteLine($"Successfully added '{member.FirstName} {member.LastName}'");
             }
             else
             {
-                // Since this is a public method, let the user know if member was not added
-                Console.WriteLine($"Failed to add '{member.FirstName} {member.LastName}' as collection is full");
+                Console.WriteLine($"Could not add '{member.FirstName} {member.LastName}' - collection full");
             }
         }
 
-        // CUSTOM PRIVATE HELPER: Compare two strings lexicographically
-        // @author: Johnny Madigan
-        // Pre-condition: nil
-        // Post-condition: return 0 if equal, -1 if first string comes before the second, 1 if it comes after
-        private int Compare(string name1, string name2)
-        {
-            // BY CHAR
-            // Linear time O(n) comparison for each char's integer value
-            int i = 0;
 
-            while (i < name1.Length && i < name2.Length)
-            {
-                if (name1[i] < name2[i])
-                {
-                    return -1;
-                } 
-                else if (name1[i] > name2[i])
-                {
-                    return 1;
-                } 
-                else
-                {
-                    // Continue as current chars are equal
-                    i++;
-                }
-            }
-
-            // BY LENGTH
-            // Constant time O(1) checking...
-            // If all chars are equal at the same positions, compare by lengths...
-            // Smaller length comes before, 1 for after, 0 for equal
-            if (name1.Length < name2.Length)
-            {
-                return -1;
-            }
-            else if (name1.Length > name2.Length)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
+        // █▀▄ █▀▀ █░░ █▀▀ ▀█▀ █▀▀
+        // █▄▀ ██▄ █▄▄ ██▄ ░█░ ██▄ @author: Johnny Madigan
         // Remove a given member out of this member collection
-        // @author: Johnny Madigan
         // Pre-condition: nil
         // Post-condition: the given member has been removed from this member collection, if the given meber was in the member collection
         public void Delete(IMember aMember)
         {
             // To be implemented by students in Phase 1
 
-            int pos = Position(aMember);
+            // Logarithmic time O(log N) for worst-case binary search
+            int min = 0;
+            int max = members.Length - 1;
 
-            if (pos >= 0)
+            if (!IsEmpty())
             {
-                // SORT
-                // Shift all members down from position of deleted member 
-                for (int i = pos; i < count - 1; i++)
+                while (min <= max)
                 {
-                    members[i] = members[i + 1];
-                }
+                    // No need for math floor as terms are integers, so C# will auto truncate decimals
+                    int mid = (max + min) / 2;
 
-                // Keep track of count
-                count--;
-                Console.WriteLine($"Successfully deleted '{aMember.FirstName} {aMember.LastName}'");
+                    int order = aMember.CompareTo(members[mid]);
+
+                    // If found, shift all members down from position of member to delete
+                    if (order == 0)
+                    {
+                        
+                        for (int i = mid; i < count - 1; i++)
+                        {
+                            members[i] = members[i + 1];
+                        }
+                        count--;
+                        Console.WriteLine($"Successfully deleted '{aMember.FirstName} {aMember.LastName}'");
+                        break;
+                    }
+                    // If not found, adjust window if member is in lower half
+                    else if (order == -1)
+                    {
+                        max = mid - 1;
+                    }
+                    // If not found, adjust window if member is in greater half
+                    else
+                    {
+                        min = mid + 1;
+                    }
+                }
+                Console.WriteLine($"Could not delete '{aMember.FirstName} {aMember.LastName}' - does not exist");
             }
             else
             {
-                // Since this is a public method, let the user know if member was not deleted
-                Console.WriteLine($"Failed to delete '{aMember.FirstName} {aMember.LastName}' as not in collection");
+                Console.WriteLine($"Could not delete '{aMember.FirstName} {aMember.LastName}' - collection empty");
             }
-                
         }
 
+
+        // █▀ █▀▀ ▄▀█ █▀█ █▀▀ █░█
+        // ▄█ ██▄ █▀█ █▀▄ █▄▄ █▀█ @author: Johnny Madigan
         // Search a given member in this member collection 
-        // @author: Johnny Madigan
         // Pre-condition: nil
         // Post-condition: return true if this memeber is in the member collection; return false otherwise; member collection remains unchanged
         public bool Search(IMember member)
         {
             // To be implemented by students in Phase 1
 
-            return Position(member) >= 0;
-        }
-
-        // CUSTOM PRIVATE HELPER: Find the index of a member in this collection using BINARY search
-        // @author: Johnny Madigan
-        // Pre-condition: nil
-        // Post-condition: return the index if member is in collection, otherwise -1
-        private int Position(IMember member)
-        {
             // Logarithmic time O(log N) for worst-case binary search
             int min = 0;
             int max = members.Length - 1;
 
-            // If not in collection, we will reach a point where...
-            // mid and Max will converge and the member should be in the greater half...
-            // causing mid to be greater than max, stopping the loop as the collection has been checked
-            while (min <= max)
+            if (!IsEmpty())
             {
-                // No need for floor method...
-                // as C# division will always result in an int if all numbers are int
-                int mid = (max + min) / 2;
-
-                if (members[mid].FirstName == member.FirstName && members[mid].LastName == member.LastName)
+                while (min <= max)
                 {
-                    return mid;
-                }
-                else
-                {
-                    // Check if new member's last name comes before, after, or identical to current midpoint
-                    int compResult = Compare(member.LastName, members[mid].LastName);
+                    // No need for math floor as terms are integers, so C# will auto truncate decimals
+                    int mid = (max + min) / 2;
 
-                    // If last names are identical, check first names
-                    if (compResult == 0) compResult = Compare(member.FirstName, members[mid].FirstName);
+                    int order = member.CompareTo(members[mid]);
 
-                    // If queried member comes before midpoint, set to search lower half, otherwise greater half
-                    if (compResult == -1)
+                    // If found, return true
+                    if (order == 0)
+                    {
+                        return true;
+                    }
+                    // If not found, adjust window if member is in lower half
+                    else if (order == -1)
                     {
                         max = mid - 1;
                     }
+                    // If not found, adjust window if member is in greater half
                     else
                     {
                         min = mid + 1;
                     }
                 }
-
+                return false;
             }
-
-            return -1; // if not found
+            else
+            {
+                return false; // immediately not found as collection empty
+            }
         }
 
         // Remove all the members in this member collection
@@ -262,7 +228,6 @@ namespace MemberApp
                 s = s + members[i].ToString() + "\n";
             return s;
         }
-
 
     }
 
