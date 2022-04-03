@@ -141,6 +141,7 @@ namespace MemberApp
                         {
                             members[i] = members[i + 1];
                         }
+                        members[count - 1] = null; // set the dangling member obj to null
                         count--;
                         Console.WriteLine($"Successfully deleted '{aMember.FirstName} {aMember.LastName}'");
                         return;
