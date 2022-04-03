@@ -143,7 +143,7 @@ namespace MemberApp
                         }
                         count--;
                         Console.WriteLine($"Successfully deleted '{aMember.FirstName} {aMember.LastName}'");
-                        break;
+                        return;
                     }
                     // If not found, adjust window if member is in lower half
                     else if (order == -1)
