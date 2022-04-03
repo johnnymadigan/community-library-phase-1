@@ -48,11 +48,11 @@ namespace MemberApp
         public int CompareTo(Member another);
 
 
+        // █░█ ▄▀█ █░░ █ █▀▄   █▀█ █░█ █▀█ █▄░█ █▀▀
+        // ▀▄▀ █▀█ █▄▄ █ █▄▀   █▀▀ █▀█ █▄█ █░▀█ ██▄ @author: Johnny Madigan
         // Check if a contact phone number is valid. A contact phone number is valid if it has 10 digits and the first digit is 0.
-        // @author: Johnny Madigan
         // Pre-condition: nil
         // Post-condition: return true, if the phone number id valid; retuns false otherwise.
-
         public static bool IsValidContactNumber(string phonenumber)
         {
             // To be implemented by students in Phase 1
@@ -70,8 +70,10 @@ namespace MemberApp
             return true; // if valid
         }
 
+
+        // █░█ ▄▀█ █░░ █ █▀▄   █▀█ █ █▄░█
+        // ▀▄▀ █▀█ █▄▄ █ █▄▀   █▀▀ █ █░▀█ @author: Johnny Madigan
         // Check if a pin is valid. A pin is valid if it is a number which has a minimal of 4 and a maximal of 6 digits.
-        // @author: Johnny Madigan
         // Pre-condition: nil
         // Post-condition: return true, if the pin valid; retuns false otherwise.
         public static bool IsValidPin(string pin)
@@ -90,7 +92,6 @@ namespace MemberApp
 
             return true; // if valid
         }
-
 
         // Return a string containing the first name, last name and contact number of this memeber
         // Pre-condition: nil
