@@ -6,6 +6,8 @@ namespace MemberApp
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Hello World!");
+
             Console.WriteLine("test");
             MemberCollection col = new MemberCollection(10);
 
@@ -43,7 +45,7 @@ namespace MemberApp
             col.Delete(m1);
             Console.WriteLine(col.Search(m1));
             Console.WriteLine(col.ToString());
-
         }
     }
 }
+

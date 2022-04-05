@@ -6,8 +6,6 @@ using System.Text;
 
 
 
-namespace MemberApp
-{
 
     interface IMemberCollection
     {
@@ -64,4 +62,3 @@ namespace MemberApp
     }
 
 
-}

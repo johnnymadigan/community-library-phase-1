@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MemberApp
-{
     interface IMember
     {
 
@@ -99,4 +97,3 @@ namespace MemberApp
         public string ToString();
     }
 
-}

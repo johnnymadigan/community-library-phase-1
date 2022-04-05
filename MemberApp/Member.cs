@@ -1,8 +1,6 @@
 ﻿//CAB301 assessment 1 - 2022
 //The implementation of Member ADT
 using System;
-namespace MemberApp
-{
     class Member : IMember
     {
         // Fields
@@ -71,4 +69,3 @@ namespace MemberApp
     }
 
 
-}

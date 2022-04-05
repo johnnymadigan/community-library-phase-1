@@ -4,8 +4,6 @@ using System;
 using System.Linq;
 
 
-namespace MemberApp
-{
 
     class MemberCollection : IMemberCollection
     {
@@ -238,4 +236,3 @@ namespace MemberApp
 
     }
 
-}
