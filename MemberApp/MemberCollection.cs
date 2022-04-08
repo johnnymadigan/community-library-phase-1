@@ -66,12 +66,21 @@ class MemberCollection : IMemberCollection
     {
         // To be implemented by students in Phase 1
 
-        // Must be room for new member
-        if (!IsFull())
+        // If full...
+        if (IsFull())
+        {
+            Console.WriteLine($"Could not add ({member.FirstName} {member.LastName}) - collection full");
+        }
+        // If member not in collection...
+        else if (!Search(member))
+        {
+            Console.WriteLine($"Could not add ({member.FirstName} {member.LastName}) - duplicate");
+        }
+        // Linear time O(n) sorting
+        else
         {
             int pos = count - 1;
 
-            // Linear time O(n) sorting
             while (pos >= 0)
             {
                 // Check if new member's name comes before current in the dictionary
@@ -84,26 +93,16 @@ class MemberCollection : IMemberCollection
                     pos--;
                 }
                 // New member comes after, break out of loop to insert
-                else if (order == 1)
+                else
                 {
                     break;
                 }
-                // New member is a duplicate, return immediately to skip insertion
-                else
-                {
-                    Console.WriteLine($"Could not '{member.FirstName} {member.LastName}' - duplicate");
-                    return;
-                }
             }
 
-            // Insert if not a duplicate
+            // Insert at correct position
             members[pos + 1] = (Member)member;
             count++;
             Console.WriteLine($"Successfully added '{member.FirstName} {member.LastName}'");
-        }
-        else
-        {
-            Console.WriteLine($"Could not add '{member.FirstName} {member.LastName}' - collection full");
         }
     }
 
@@ -117,12 +116,15 @@ class MemberCollection : IMemberCollection
     {
         // To be implemented by students in Phase 1
 
-        // Logarithmic time O(log N) for worst-case binary search
-        int min = 0;
-        int max = members.Length - 1;
-
+        // Must not be empty and don't bother calling Search() as inefficient
+        // doing a binary search twice (Search() returns a bool so will
+        // need to do another binary search for the position anyway)
         if (!IsEmpty())
         {
+            // Logarithmic time O(log N) for worst-case binary search
+            int min = 0;
+            int max = members.Length - 1;
+
             while (min <= max)
             {
                 // No need for math floor as terms are integers, so C# will auto truncate decimals
@@ -133,7 +135,6 @@ class MemberCollection : IMemberCollection
                 // If found, shift all members down from position of member to delete
                 if (order == 0)
                 {
-                        
                     for (int i = mid; i < count - 1; i++)
                     {
                         members[i] = members[i + 1];
@@ -141,7 +142,7 @@ class MemberCollection : IMemberCollection
                     members[count - 1] = null; // set the dangling member obj to null
                     count--;
                     Console.WriteLine($"Successfully deleted '{aMember.FirstName} {aMember.LastName}'");
-                    return;
+                    break;
                 }
                 // If not found, adjust window if member is in lower half
                 else if (order == -1)
@@ -172,12 +173,13 @@ class MemberCollection : IMemberCollection
     {
         // To be implemented by students in Phase 1
 
-        // Logarithmic time O(log N) for worst-case binary search
-        int min = 0;
-        int max = members.Length - 1;
-
+        // If already empty, return false immediately
         if (!IsEmpty())
         {
+            // Logarithmic time O(log N) for worst-case binary search
+            int min = 0;
+            int max = members.Length - 1;
+
             while (min <= max)
             {
                 // No need for math floor as terms are integers, so C# will auto truncate decimals
