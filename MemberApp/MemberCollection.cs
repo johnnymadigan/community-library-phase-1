@@ -66,44 +66,37 @@ class MemberCollection : IMemberCollection
     {
         // To be implemented by students in Phase 1
 
-        // If full...
-        if (IsFull())
+        // If not full and not in collection (no duplicates)
+        if (!IsFull() && !Search(member))
         {
-            Console.WriteLine($"Could not add ({member.FirstName} {member.LastName}) - collection full");
-        }
-        // If member not in collection...
-        else if (!Search(member))
-        {
-            Console.WriteLine($"Could not add ({member.FirstName} {member.LastName}) - duplicate");
-        }
-        // Linear time O(n) sorting
-        else
-        {
-            int pos = count - 1;
+            // Linear time O(n) sorting
+            int position = count - 1;
 
-            while (pos >= 0)
+            while (position >= 0)
             {
                 // Check if new member's name comes before current in the dictionary
-                int order = member.CompareTo(members[pos]);
+                int order = member.CompareTo(members[position]);
 
-                // New member comes before, shift members up and loop
+                // New member comes before current, shift members up and loop
                 if (order == -1)
                 {
-                    members[pos + 1] = members[pos];
-                    pos--;
+                    members[position + 1] = members[position];
+                    position--;
                 }
-                // New member comes after, break out of loop to insert
-                else
-                {
-                    break;
-                }
+                // New member comes after current, break out of loop to insert
+                else break;
             }
 
-            // Insert at correct position
-            members[pos + 1] = (Member)member;
+            // Insert into gap
+            members[position + 1] = (Member)member;
             count++;
-            Console.WriteLine($"Successfully added '{member.FirstName} {member.LastName}'");
+            Console.WriteLine($"ADDED ({member.FirstName} {member.LastName})");
         }
+        else if (IsFull())
+        {
+            Console.WriteLine($"NOT ADDED ({member.FirstName} {member.LastName}) COLLECTION FULL");
+        }
+        else Console.WriteLine($"NOT ADDED ({member.FirstName} {member.LastName}) DUPLICATE");
     }
 
 
@@ -123,16 +116,15 @@ class MemberCollection : IMemberCollection
         {
             // Logarithmic time O(log N) for worst-case binary search
             int min = 0;
-            int max = members.Length - 1;
+            int max = count - 1;
 
             while (min <= max)
             {
-                // No need for math floor as terms are integers, so C# will auto truncate decimals
+                // No need for math floor as terms are integers (C# will auto truncate decimals)
                 int mid = (max + min) / 2;
-
                 int order = aMember.CompareTo(members[mid]);
 
-                // If found, shift all members down from position of member to delete
+                // If found, shift all members down to delete queried member
                 if (order == 0)
                 {
                     for (int i = mid; i < count - 1; i++)
@@ -141,8 +133,8 @@ class MemberCollection : IMemberCollection
                     }
                     members[count - 1] = null; // set the dangling member obj to null
                     count--;
-                    Console.WriteLine($"Successfully deleted '{aMember.FirstName} {aMember.LastName}'");
-                    break;
+                    Console.WriteLine($"DELETED ({aMember.FirstName} {aMember.LastName})");
+                    return;
                 }
                 // If not found, adjust window if member is in lower half
                 else if (order == -1)
@@ -150,17 +142,11 @@ class MemberCollection : IMemberCollection
                     max = mid - 1;
                 }
                 // If not found, adjust window if member is in greater half
-                else
-                {
-                    min = mid + 1;
-                }
+                else min = mid + 1;
             }
-            Console.WriteLine($"Could not delete '{aMember.FirstName} {aMember.LastName}' - does not exist");
+            Console.WriteLine($"NOT DELETED ({aMember.FirstName} {aMember.LastName}) DOES NOT EXIST");
         }
-        else
-        {
-            Console.WriteLine($"Could not delete '{aMember.FirstName} {aMember.LastName}' - collection empty");
-        }
+        else Console.WriteLine($"NOT DELETED ({aMember.FirstName} {aMember.LastName}) COLLECTION EMPTY");
     }
 
 
@@ -178,13 +164,12 @@ class MemberCollection : IMemberCollection
         {
             // Logarithmic time O(log N) for worst-case binary search
             int min = 0;
-            int max = members.Length - 1;
+            int max = count - 1;
 
             while (min <= max)
             {
-                // No need for math floor as terms are integers, so C# will auto truncate decimals
+                // No need for math floor as terms are integers (C# will auto truncate decimals)
                 int mid = (max + min) / 2;
-
                 int order = member.CompareTo(members[mid]);
 
                 // If found, return true
@@ -198,17 +183,11 @@ class MemberCollection : IMemberCollection
                     max = mid - 1;
                 }
                 // If not found, adjust window if member is in greater half
-                else
-                {
-                    min = mid + 1;
-                }
+                else min = mid + 1;
             }
             return false;
         }
-        else
-        {
-            return false; // immediately not found as collection empty
-        }
+        else return false;
     }
 
     // Remove all the members in this member collection
