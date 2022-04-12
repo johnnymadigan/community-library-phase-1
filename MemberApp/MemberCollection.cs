@@ -128,21 +128,14 @@ class MemberCollection : IMemberCollection
                 if (order == 0)
                 {
                     for (int i = mid; i < count - 1; i++)
-                    {
                         members[i] = members[i + 1];
-                    }
                     members[count - 1] = null; // set the dangling member obj to null
                     count--;
                     Console.WriteLine($"DELETED ({aMember.FirstName} {aMember.LastName})");
                     return;
                 }
-                // If not found, adjust window if member is in lower half
-                else if (order == -1)
-                {
-                    max = mid - 1;
-                }
-                // If not found, adjust window if member is in greater half
-                else min = mid + 1;
+                else if (order == -1) max = mid - 1;    // If not found, adjust window if member is in lower half
+                else min = mid + 1;                     // If not found, adjust window if member is in greater half
             }
             Console.WriteLine($"NOT DELETED ({aMember.FirstName} {aMember.LastName}) DOES NOT EXIST");
         }
@@ -171,19 +164,10 @@ class MemberCollection : IMemberCollection
                 // No need for math floor as terms are integers (C# will auto truncate decimals)
                 int mid = (max + min) / 2;
                 int order = member.CompareTo(members[mid]);
-
-                // If found, return true
-                if (order == 0)
-                {
-                    return true;
-                }
-                // If not found, adjust window if member is in lower half
-                else if (order == -1)
-                {
-                    max = mid - 1;
-                }
-                // If not found, adjust window if member is in greater half
-                else min = mid + 1;
+                
+                if (order == 0) return true;            // If found, return true
+                else if (order == -1) max = mid - 1;    // If not found, adjust window if member is in lower half
+                else min = mid + 1;                     // If not found, adjust window if member is in greater half
             }
             return false;
         }

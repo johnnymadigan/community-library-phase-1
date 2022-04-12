@@ -57,16 +57,13 @@ interface IMember
         // To be implemented by students in Phase 1
         int len = phonenumber.Length;
 
-        // Constant time O(1) validations
         if (len != 10 || phonenumber[0] != '0') return false;
 
         // Linear time O(n) validation
         for (int i = 0; i < len; i++)
-        {
             if (phonenumber[i] < '0' || phonenumber[i] > '9') return false;
-        }
 
-        return true; // if valid
+        return true;
     }
 
 
@@ -80,16 +77,13 @@ interface IMember
         // To be implemented by students in Phase 1
         int len = pin.Length;
 
-        // Constant time O(1) validation
         if (len < 4 || pin.Length > 6) return false;
 
         // Linear time O(n) validation
         for (int i = 0; i < len; i++)
-        {
             if (pin[i] < '0' || pin[i] > '9') return false;
-        }
 
-        return true; // if valid
+        return true;
     }
 
 
