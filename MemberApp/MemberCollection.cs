@@ -64,39 +64,26 @@ class MemberCollection : IMemberCollection
     // No duplicate will be added into this the member collection
     public void Add(IMember member)
     {
-        // To be implemented by students in Phase 1
-
-        // If not full and not in collection (no duplicates)
-        if (!IsFull() && !Search(member))
+        if (!IsFull() && !Search(member))                   // Binary search to see if member exists to prevent adding duplicate
         {
-            // Linear time O(n) sorting
-            int position = count - 1;
+            int pos = count - 1;
 
-            while (position >= 0)
+            while (pos >= 0)                                // If adding the first member (pos will be -1) skip loop to insert immediately
             {
-                // Check if new member's name comes before current in the dictionary
-                int order = member.CompareTo(members[position]);
-
-                // New member comes before current, shift members up and loop
-                if (order == -1)
+                if (member.CompareTo(members[pos]) == -1)   // BASIC OP (most frequent/impactful in worst-case)
                 {
-                    members[position + 1] = members[position];
-                    position--;
+                    members[pos + 1] = members[pos];        // New member comes before current, shift members up and loop
+                    pos--;
                 }
-                // New member comes after current, break out of loop to insert
-                else break;
+                else break;                                 // New member comes after current, break out of loop to insert into gap
             }
 
-            // Insert into gap
-            members[position + 1] = (Member)member;
+            members[pos + 1] = (Member)member;
             count++;
-            Console.WriteLine($"ADDED ({member.FirstName} {member.LastName})");
+            Console.WriteLine($"✔ ADDED ({member.FirstName} {member.LastName})");
         }
-        else if (IsFull())
-        {
-            Console.WriteLine($"NOT ADDED ({member.FirstName} {member.LastName}) COLLECTION FULL");
-        }
-        else Console.WriteLine($"NOT ADDED ({member.FirstName} {member.LastName}) DUPLICATE");
+        else if (IsFull()) Console.WriteLine($"✘ NOT ADDED ({member.FirstName} {member.LastName}) COLLECTION FULL");
+        else Console.WriteLine($"✘ NOT ADDED ({member.FirstName} {member.LastName}) DUPLICATE");
     }
 
 
@@ -107,39 +94,34 @@ class MemberCollection : IMemberCollection
     // Post-condition: the given member has been removed from this member collection, if the given meber was in the member collection
     public void Delete(IMember aMember)
     {
-        // To be implemented by students in Phase 1
-
-        // Must not be empty and don't bother calling Search() as inefficient
-        // doing a binary search twice (Search() returns a bool so will
-        // need to do another binary search for the position anyway)
+        // Don't bother calling SEARCH as inefficient doing a binary search twice...
+        // (SEARCH returns a bool so will need to do another binary search for the position anyway)
         if (!IsEmpty())
         {
-            // Logarithmic time O(log N) for worst-case binary search
             int min = 0;
             int max = count - 1;
 
-            while (min <= max)
+            while (min <= max)                          // Logarithmic time O(log N) for worst-case binary search
             {
-                // No need for math floor as terms are integers (C# will auto truncate decimals)
-                int mid = (max + min) / 2;
+                int mid = (max + min) / 2;              // No need for "floor" as terms are integers so C# auto truncates decimals
                 int order = aMember.CompareTo(members[mid]);
 
-                // If found, shift all members down to delete queried member
-                if (order == 0)
+                if (order == 0)                         // If found, shift members from queried member down by 1 to delete
                 {
                     for (int i = mid; i < count - 1; i++)
-                        members[i] = members[i + 1];
-                    members[count - 1] = null; // set the dangling member obj to null
+                        members[i] = members[i + 1];    // BASIC OP (most frequent/impactful in worst-case)
+                    members[count - 1] = null;          // Set the dangling member obj to null
                     count--;
-                    Console.WriteLine($"DELETED ({aMember.FirstName} {aMember.LastName})");
+                    Console.WriteLine($"✔ DELETED ({aMember.FirstName} {aMember.LastName})");
                     return;
                 }
                 else if (order == -1) max = mid - 1;    // If not found, adjust window if member is in lower half
                 else min = mid + 1;                     // If not found, adjust window if member is in greater half
             }
-            Console.WriteLine($"NOT DELETED ({aMember.FirstName} {aMember.LastName}) DOES NOT EXIST");
+            // Reach here if member to delete was never found
+            Console.WriteLine($"✘ NOT DELETED ({aMember.FirstName} {aMember.LastName}) DOES NOT EXIST");
         }
-        else Console.WriteLine($"NOT DELETED ({aMember.FirstName} {aMember.LastName}) COLLECTION EMPTY");
+        else Console.WriteLine($"✘ NOT DELETED ({aMember.FirstName} {aMember.LastName}) COLLECTION EMPTY");
     }
 
 
@@ -150,28 +132,22 @@ class MemberCollection : IMemberCollection
     // Post-condition: return true if this memeber is in the member collection; return false otherwise; member collection remains unchanged
     public bool Search(IMember member)
     {
-        // To be implemented by students in Phase 1
-
-        // If already empty, return false immediately
         if (!IsEmpty())
         {
-            // Logarithmic time O(log N) for worst-case binary search
             int min = 0;
             int max = count - 1;
 
-            while (min <= max)
+            while (min <= max)                              // Logarithmic time O(log N) for worst-case binary search
             {
-                // No need for math floor as terms are integers (C# will auto truncate decimals)
-                int mid = (max + min) / 2;
-                int order = member.CompareTo(members[mid]);
+                int mid = (max + min) / 2;                  // No need for "floor" as terms are integers so C# auto truncates decimals
+                int order = member.CompareTo(members[mid]); // BASIC OP (most frequent/impactful in worst-case)
                 
-                if (order == 0) return true;            // If found, return true
-                else if (order == -1) max = mid - 1;    // If not found, adjust window if member is in lower half
-                else min = mid + 1;                     // If not found, adjust window if member is in greater half
+                if (order == 0) return true;                // If found, return true
+                else if (order == -1) max = mid - 1;        // If not found, adjust window if member is in lower half
+                else min = mid + 1;                         // If not found, adjust window if member is in greater half
             }
-            return false;
         }
-        else return false;
+        return false;                                       // Reach here if collection was empty OR member was never found
     }
 
     // Remove all the members in this member collection
