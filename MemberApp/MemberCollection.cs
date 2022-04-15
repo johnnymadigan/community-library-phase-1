@@ -56,14 +56,15 @@ class MemberCollection : IMemberCollection
         return count == 0;
     }
 
-    // ▄▀█ █▀▄ █▀▄
-    // █▀█ █▄▀ █▄▀ @author: Johnny Madigan
     // Add a new member to this member collection
     // Pre-condition: this member collection is not full
     // Post-condition: a new member is added to the member collection and the members are sorted in ascending order by their full names;
     // No duplicate will be added into this the member collection
     public void Add(IMember member)
     {
+        // ▄▀█ █▀▄ █▀▄
+        // █▀█ █▄▀ █▄▀ @author: Johnny Madigan
+
         if (!IsFull() && !Search(member))                   // Binary search to see if member exists to prevent adding duplicate
         {
             int pos = count - 1;
@@ -86,14 +87,14 @@ class MemberCollection : IMemberCollection
         else Console.WriteLine($"✘ NOT ADDED ({member.FirstName} {member.LastName}) DUPLICATE");
     }
 
-
-    // █▀▄ █▀▀ █░░ █▀▀ ▀█▀ █▀▀
-    // █▄▀ ██▄ █▄▄ ██▄ ░█░ ██▄ @author: Johnny Madigan
     // Remove a given member out of this member collection
     // Pre-condition: nil
     // Post-condition: the given member has been removed from this member collection, if the given meber was in the member collection
     public void Delete(IMember aMember)
     {
+        // █▀▄ █▀▀ █░░ █▀▀ ▀█▀ █▀▀
+        // █▄▀ ██▄ █▄▄ ██▄ ░█░ ██▄ @author: Johnny Madigan
+
         // Don't bother calling SEARCH as inefficient doing a binary search twice...
         // (SEARCH returns a bool so will need to do another binary search for the position anyway)
         if (!IsEmpty())
@@ -124,14 +125,14 @@ class MemberCollection : IMemberCollection
         else Console.WriteLine($"✘ NOT DELETED ({aMember.FirstName} {aMember.LastName}) COLLECTION EMPTY");
     }
 
-
-    // █▀ █▀▀ ▄▀█ █▀█ █▀▀ █░█
-    // ▄█ ██▄ █▀█ █▀▄ █▄▄ █▀█ @author: Johnny Madigan
     // Search a given member in this member collection 
     // Pre-condition: nil
     // Post-condition: return true if this memeber is in the member collection; return false otherwise; member collection remains unchanged
     public bool Search(IMember member)
     {
+        // █▀ █▀▀ ▄▀█ █▀█ █▀▀ █░█
+        // ▄█ ██▄ █▀█ █▀▄ █▄▄ █▀█ @author: Johnny Madigan
+
         if (!IsEmpty())
         {
             int min = 0;

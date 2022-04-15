@@ -59,7 +59,7 @@ interface IMember
 
         if (n == 10 && phonenumber[0] == '0') {
             for (int i = 0; i < n; i++)
-                if (!char.IsDigit(phonenumber[i])) return false;
+                if (!char.IsDigit(phonenumber[i])) return false; // BASIC OP (most frequent/impactful in worst-case)
             return true;
         }
         else return false;
@@ -78,7 +78,7 @@ interface IMember
         if (n >= 4 && n <= 6)
         {
             for (int i = 0; i < n; i++)
-                if (!char.IsDigit(pin[i])) return false;
+                if (!char.IsDigit(pin[i])) return false; // BASIC OP (most frequent/impactful in worst-case)
             return true;
         }
         else return false;
