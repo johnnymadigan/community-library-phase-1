@@ -142,7 +142,6 @@ class MemberCollection : IMemberCollection
             {
                 int mid = (max + min) / 2;                  // No need for "floor" as terms are integers so C# auto truncates decimals
                 int order = member.CompareTo(members[mid]);
-
                 // BASIC OPS BELOW
                 if (order == 0) return true;                // If found, return true
                 else if (order == -1) max = mid - 1;        // If not found, adjust window if member is in lower half
