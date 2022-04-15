@@ -8,29 +8,32 @@ namespace MemberApp
         {
             Console.WriteLine($"Phone tests passed? {TestPhone()}");
             Console.WriteLine($"Pin tests passed? {TestPin()}");
+            Console.WriteLine("");
 
+            // SETUP COLLECTION AND MEMBERS
             IMemberCollection col = new MemberCollection(4);
 
-            IMember m1 = new Member("i go last", "zzzz");
+            IMember m1 = new Member("im last", "z");
             IMember m2 = new Member("paul", "dano");
-            IMember m3 = new Member("i go first", "aaaa");
+            IMember m3 = new Member("im first", "a");
             IMember m4 = new Member("bofa", "dem");
 
-            Console.WriteLine(col.Search(m4)); // false (quick cus empty)
-            col.Delete(m1); // empty
-            col.Add(m1);
-            col.Delete(m2); // does not exist
-            Console.WriteLine(col.Search(m2)); // false (not empty but added yet)
-            col.Add(m2);
-            col.Add(m3);
-            col.Add(m3);    // dupe
-            col.Add(m4);
-            col.Add(m4);    // full (before recognising dupe)
-            Console.WriteLine(col.Search(m4)); // true
-            col.Delete(m2);
-            Console.WriteLine(col.Search(m2)); // false
-            col.Delete(m2); // does not exist
-            col.Add(m2);
+            // ADD/SEARCH/DELETE TESTS
+            Console.WriteLine($"False = { col.Search(m4)}"); // false (quick cus empty)
+            Console.Write("✘ EMPTY = "); col.Delete(m1);
+            Console.Write("✔ = "); col.Add(m1);
+            Console.Write("✘ DOES NOT EXIST = "); col.Delete(m2);
+            Console.WriteLine($"False = { col.Search(m2)}"); // false (not empty but added yet)
+            Console.Write("✔ = "); col.Add(m2);
+            Console.Write("✔ = "); col.Add(m3);
+            Console.Write("✘ DUPE = "); col.Add(m3);
+            Console.Write("✔ = "); col.Add(m4);
+            Console.Write("✘ FULL = "); col.Add(m4); // full (before recognising dupe)
+            Console.WriteLine($"True = { col.Search(m4)}");
+            Console.Write("✔ = "); col.Delete(m2);
+            Console.WriteLine($"False = { col.Search(m2)}");
+            Console.Write("✘ DOES NOT EXIST = "); col.Delete(m2); // does not exist
+            Console.Write("✔ = "); col.Add(m2);
 
             Console.WriteLine("________________________________\n" +
                 col.ToString() + "________________________________\n");
