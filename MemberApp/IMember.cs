@@ -54,7 +54,6 @@ interface IMember
     // Post-condition: return true, if the phone number id valid; retuns false otherwise.
     public static bool IsValidContactNumber(string phonenumber)
     {
-        // To be implemented by students in Phase 1
         int len = phonenumber.Length;
 
         if (len != 10 || phonenumber[0] != '0') return false;
@@ -74,7 +73,6 @@ interface IMember
     // Post-condition: return true, if the pin valid; retuns false otherwise.
     public static bool IsValidPin(string pin)
     {
-        // To be implemented by students in Phase 1
         int len = pin.Length;
 
         if (len < 4 || pin.Length > 6) return false;
