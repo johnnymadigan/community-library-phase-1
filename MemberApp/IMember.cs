@@ -47,41 +47,41 @@ interface IMember
     public int CompareTo(IMember member);
 
 
-    // █░█ ▄▀█ █░░ █ █▀▄   █▀█ █░█ █▀█ █▄░█ █▀▀
-    // ▀▄▀ █▀█ █▄▄ █ █▄▀   █▀▀ █▀█ █▄█ █░▀█ ██▄ @author: Johnny Madigan
     // Check if a contact phone number is valid. A contact phone number is valid if it has 10 digits and the first digit is 0.
     // Pre-condition: nil
     // Post-condition: return true, if the phone number id valid; retuns false otherwise.
     public static bool IsValidContactNumber(string phonenumber)
     {
-        int len = phonenumber.Length;
+        // █░█ ▄▀█ █░░ █ █▀▄   █▀█ █░█ █▀█ █▄░█ █▀▀
+        // ▀▄▀ █▀█ █▄▄ █ █▄▀   █▀▀ █▀█ █▄█ █░▀█ ██▄ @author: Johnny Madigan
 
-        if (len != 10 || phonenumber[0] != '0') return false;
+        int n = phonenumber.Length;
 
-        // Linear time O(n) validation
-        for (int i = 0; i < len; i++)
-            if (phonenumber[i] < '0' || phonenumber[i] > '9') return false;
-
-        return true;
+        if (n == 10 && phonenumber[0] == '0') {
+            for (int i = 0; i < n; i++)
+                if (!char.IsDigit(phonenumber[i])) return false;
+            return true;
+        }
+        else return false;
     }
 
-
-    // █░█ ▄▀█ █░░ █ █▀▄   █▀█ █ █▄░█
-    // ▀▄▀ █▀█ █▄▄ █ █▄▀   █▀▀ █ █░▀█ @author: Johnny Madigan
     // Check if a pin is valid. A pin is valid if it is a number which has a minimal of 4 and a maximal of 6 digits.
     // Pre-condition: nil
     // Post-condition: return true, if the pin valid; retuns false otherwise.
     public static bool IsValidPin(string pin)
     {
-        int len = pin.Length;
+        // █░█ ▄▀█ █░░ █ █▀▄   █▀█ █ █▄░█
+        // ▀▄▀ █▀█ █▄▄ █ █▄▀   █▀▀ █ █░▀█ @author: Johnny Madigan
 
-        if (len < 4 || pin.Length > 6) return false;
+        int n = pin.Length;
 
-        // Linear time O(n) validation
-        for (int i = 0; i < len; i++)
-            if (pin[i] < '0' || pin[i] > '9') return false;
-
-        return true;
+        if (n >= 4 && n <= 6)
+        {
+            for (int i = 0; i < n; i++)
+                if (!char.IsDigit(pin[i])) return false;
+            return true;
+        }
+        else return false;
     }
 
 
