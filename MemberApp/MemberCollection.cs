@@ -140,8 +140,9 @@ class MemberCollection : IMemberCollection
             while (min <= max)                              // Logarithmic time O(log N) for worst-case binary search
             {
                 int mid = (max + min) / 2;                  // No need for "floor" as terms are integers so C# auto truncates decimals
-                int order = member.CompareTo(members[mid]); // BASIC OP (most frequent/impactful in worst-case)
-                
+                int order = member.CompareTo(members[mid]);
+
+                // BASIC OPS BELOW
                 if (order == 0) return true;                // If found, return true
                 else if (order == -1) max = mid - 1;        // If not found, adjust window if member is in lower half
                 else min = mid + 1;                         // If not found, adjust window if member is in greater half
