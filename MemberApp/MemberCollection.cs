@@ -65,20 +65,21 @@ class MemberCollection : IMemberCollection
         // ▄▀█ █▀▄ █▀▄
         // █▀█ █▄▀ █▄▀ @author: Johnny Madigan
 
-        if (!IsFull() && !Search(member))                   // Binary search to see if member exists to prevent adding duplicate
+        if (!IsFull() && !Search(member)) // Call binary search to see if member exists to prevent adding duplicate
         {
             int pos = count - 1;
 
-            while (pos >= 0)                                // If adding the first member (pos will be -1) skip loop to insert immediately
+            while (pos >= 0) // If adding the first member (pos will be -1) skip loop to insert immediately
             {
-                if (member.CompareTo(members[pos]) == -1)   // BASIC OP (most frequent/impactful in worst-case)
+                // If new member comes before current, shift current member up to make a gap then loop
+                // Otherwise new member comes after current so break out of loop to insert into gap
+                if (member.CompareTo(members[pos]) == -1) // BASIC OP (most impactful in worst-case)
                 {
-                    members[pos + 1] = members[pos];        // New member comes before current, shift members up and loop
+                    members[pos + 1] = members[pos];
                     pos--;
                 }
-                else break;                                 // New member comes after current, break out of loop to insert into gap
+                else break;
             }
-
             members[pos + 1] = (Member)member;
             count++;
             Console.WriteLine($"✔ ADDED ({member.FirstName} {member.LastName})");
@@ -89,7 +90,7 @@ class MemberCollection : IMemberCollection
 
     // Remove a given member out of this member collection
     // Pre-condition: nil
-    // Post-condition: the given member has been removed from this member collection, if the given meber was in the member collection
+    // Post-condition: the given member has been removed from this member collection, if the given member was in the member collection
     public void Delete(IMember aMember)
     {
         // █▀▄ █▀▀ █░░ █▀▀ ▀█▀ █▀▀
@@ -102,27 +103,26 @@ class MemberCollection : IMemberCollection
             int min = 0;
             int max = count - 1;
 
-            while (min <= max)                          // Logarithmic time O(log N) for worst-case binary search
+            // Logarithmic time O(log N) for worst-case binary search
+            while (min <= max)                                                  
             {
-                int mid = (max + min) / 2;              // No need for "floor" as terms are integers so C# auto truncates decimals
-                int order = aMember.CompareTo(members[mid]);
+                int mid = (max + min) / 2; // No "floor" needed as terms are integers (C# auto truncates decimals)
 
-                if (order == 0)                         // If found, shift members from queried member down by 1 to delete
+                // Found? shift members down by 1 from queried member to delete, otherwise adjust search window (lower or greater half)
+                if (aMember.CompareTo(members[mid]) == 0)
                 {
                     for (int i = mid; i < count - 1; i++)
-                        members[i] = members[i + 1];    // BASIC OP (most frequent/impactful in worst-case)
-                    members[count - 1] = null;          // Set the dangling member obj to null
+                        members[i] = members[i + 1]; // BASIC OP (most impactful in worst-case)
+                    members[count - 1] = null; // Set the dangling member obj to null
                     count--;
                     Console.WriteLine($"✔ DELETED ({aMember.FirstName} {aMember.LastName})");
                     return;
                 }
-                else if (order == -1) max = mid - 1;    // If not found, adjust window if member is in lower half
-                else min = mid + 1;                     // If not found, adjust window if member is in greater half
-            }
-            // Reach here if member to delete was never found
-            Console.WriteLine($"✘ NOT DELETED ({aMember.FirstName} {aMember.LastName}) DOES NOT EXIST");
+                else if (aMember.CompareTo(members[mid]) == -1) max = mid - 1;
+                else min = mid + 1;
+            }                                                                   
         }
-        else Console.WriteLine($"✘ NOT DELETED ({aMember.FirstName} {aMember.LastName}) COLLECTION EMPTY");
+        Console.WriteLine($"✘ DOES NOT EXIST ({aMember.FirstName} {aMember.LastName})");
     }
 
     // Search a given member in this member collection 
@@ -138,17 +138,19 @@ class MemberCollection : IMemberCollection
             int min = 0;
             int max = count - 1;
 
-            while (min <= max)                              // Logarithmic time O(log N) for worst-case binary search
+            // Logarithmic time O(log N) for worst-case binary search
+            while (min <= max) 
             {
-                int mid = (max + min) / 2;                  // No need for "floor" as terms are integers so C# auto truncates decimals
-                int order = member.CompareTo(members[mid]);
+                int mid = (max + min) / 2; // No "floor" needed as terms are integers (C# auto truncates decimals)
+
                 // BASIC OPS BELOW
-                if (order == 0) return true;                // If found, return true
-                else if (order == -1) max = mid - 1;        // If not found, adjust window if member is in lower half
-                else min = mid + 1;                         // If not found, adjust window if member is in greater half
+                // Found? return true, otherwise adjust search window (lower or greater half)
+                if (member.CompareTo(members[mid]) == 0) return true;
+                else if (member.CompareTo(members[mid]) == -1) max = mid - 1;
+                else min = mid + 1;
             }
         }
-        return false;                                       // Reach here if collection was empty OR member was never found
+        return false;
     }
 
     // Remove all the members in this member collection

@@ -4,39 +4,23 @@ namespace MemberApp
 {
     class Program
     {
+        public static IMemberCollection col = new MemberCollection(4);
+
+        public static IMember m1 = new Member("im last", "z");
+        public static IMember m2 = new Member("paul", "dano");
+        public static IMember m3 = new Member("im first", "a");
+        public static IMember m4 = new Member("bofa", "dem");
+
         static void Main(string[] args)
         {
-            Console.WriteLine($"Phone tests passed? {TestPhone()}");
-            Console.WriteLine($"Pin tests passed? {TestPin()}");
-            Console.WriteLine("");
+            // TESTS
+            Console.WriteLine($"✔ = Phone tests are {TestPhone()}");
+            Console.WriteLine($"✔ = Pin tests are {TestPin()}");
+            TestCollection();
 
-            // SETUP COLLECTION AND MEMBERS
-            IMemberCollection col = new MemberCollection(4);
-
-            IMember m1 = new Member("im last", "z");
-            IMember m2 = new Member("paul", "dano");
-            IMember m3 = new Member("im first", "a");
-            IMember m4 = new Member("bofa", "dem");
-
-            // ADD/SEARCH/DELETE TESTS
-            Console.WriteLine($"False = { col.Search(m4)}"); // false (quick cus empty)
-            Console.Write("✘ EMPTY = "); col.Delete(m1);
-            Console.Write("✔ = "); col.Add(m1);
-            Console.Write("✘ DOES NOT EXIST = "); col.Delete(m2);
-            Console.WriteLine($"False = { col.Search(m2)}"); // false (not empty but added yet)
-            Console.Write("✔ = "); col.Add(m2);
-            Console.Write("✔ = "); col.Add(m3);
-            Console.Write("✘ DUPE = "); col.Add(m3);
-            Console.Write("✔ = "); col.Add(m4);
-            Console.Write("✘ FULL = "); col.Add(m4); // full (before recognising dupe)
-            Console.WriteLine($"True = { col.Search(m4)}");
-            Console.Write("✔ = "); col.Delete(m2);
-            Console.WriteLine($"False = { col.Search(m2)}");
-            Console.Write("✘ DOES NOT EXIST = "); col.Delete(m2); // does not exist
-            Console.Write("✔ = "); col.Add(m2);
-
-            Console.WriteLine("________________________________\n" +
-                col.ToString() + "________________________________\n");
+            // PRINT COLLECTION
+            Console.WriteLine("\n━━┅━━━┅━━┅━━╾╮\n" +
+                col.ToString() + "━━┅━━━┅━━┅━━╾╯\n");
         }
 
         static bool TestPhone()
@@ -72,6 +56,37 @@ namespace MemberApp
             if (IMember.IsValidPin("      ")) return false;     // blank higher bound
 
             return true;
+        }
+
+        static void TestCollection()
+        {
+            string s;
+
+            s = col.Search(m4) ? $"✔ {col.Search(m4)}" : $"✘ {col.Search(m4)}";
+            Console.WriteLine($"✘ = {s}");
+
+            Console.Write("✘ = "); col.Delete(m1);
+            Console.Write("✔ = "); col.Add(m1);
+            Console.Write("✘ = "); col.Delete(m2);
+
+            s = col.Search(m2) ? $"✔ {col.Search(m2)}" : $"✘ {col.Search(m2)}";
+            Console.WriteLine($"✘ = {s}");
+
+            Console.Write("✔ = "); col.Add(m2);
+            Console.Write("✔ = "); col.Add(m3);
+            Console.Write("✘ = "); col.Add(m3);
+            Console.Write("✔ = "); col.Add(m4);
+            Console.Write("✘ = "); col.Add(m4);
+
+            s = col.Search(m4) ? $"✔ {col.Search(m4)}" : $"✘ {col.Search(m4)}";
+            Console.WriteLine($"✔ = {s}");
+
+            Console.Write("✔ = "); col.Delete(m2);
+
+            s = col.Search(m2) ? $"✔ {col.Search(m2)}" : $"✘ {col.Search(m2)}";
+            Console.WriteLine($"✘ = {s}");
+            Console.Write("✘ = "); col.Delete(m2);
+            Console.Write("✔ = "); col.Add(m2);
         }
     }
 }
