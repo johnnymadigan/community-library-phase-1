@@ -122,7 +122,7 @@ class MemberCollection : IMemberCollection
                 else min = mid + 1;
             }                                                                   
         }
-        Console.WriteLine($"✘ DOES NOT EXIST ({aMember.FirstName} {aMember.LastName})");
+        Console.WriteLine($"✘ ALREADY DELETED ({aMember.FirstName} {aMember.LastName}) DOES NOT EXIST");
     }
 
     // Search a given member in this member collection 
