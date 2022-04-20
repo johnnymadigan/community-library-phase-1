@@ -71,7 +71,7 @@ class MemberCollection : IMemberCollection
 
             while (pos >= 0) // If adding the first member (pos will be -1) skip loop to insert immediately
             {
-                // If new member comes before current, shift current member up to make a gap then loop
+                // If new member comes before current, shift current member up to make a gap then loop...
                 // Otherwise new member comes after current so break out of loop to insert into gap
                 if (member.CompareTo(members[pos]) == -1) // BASIC OP (most impactful in worst-case)
                 {
@@ -97,7 +97,7 @@ class MemberCollection : IMemberCollection
         // █▄▀ ██▄ █▄▄ ██▄ ░█░ ██▄ @author: Johnny Madigan
 
         // Don't bother calling SEARCH as inefficient doing a binary search twice...
-        // (SEARCH returns a bool so will need to do another binary search for the position anyway)
+        // SEARCH returns a bool so will need to do another search for the position
         if (!IsEmpty())
         {
             int min = 0;
@@ -106,14 +106,14 @@ class MemberCollection : IMemberCollection
             // Logarithmic time O(log N) for worst-case binary search
             while (min <= max)                                                  
             {
-                int mid = (max + min) / 2; // No "floor" needed as terms are integers (C# auto truncates decimals)
+                int mid = (max + min) / 2; // No "floor" needed as terms are ints (C# auto truncates)
 
                 // Found? shift members down by 1 from queried member to delete, otherwise adjust search window (lower or greater half)
                 if (aMember.CompareTo(members[mid]) == 0)
                 {
                     for (int i = mid; i < count - 1; i++)
-                        members[i] = members[i + 1]; // BASIC OP (most impactful in worst-case)
-                    members[count - 1] = null; // Set the dangling member obj to null
+                        members[i] = members[i + 1];    // BASIC OP (most impactful in worst-case)
+                    members[count - 1] = null;          // Set the dangling member obj to null
                     count--;
                     Console.WriteLine($"✔ DELETED ({aMember.FirstName} {aMember.LastName})");
                     return;
@@ -141,12 +141,11 @@ class MemberCollection : IMemberCollection
             // Logarithmic time O(log N) for worst-case binary search
             while (min <= max) 
             {
-                int mid = (max + min) / 2; // No "floor" needed as terms are integers (C# auto truncates decimals)
+                int mid = (max + min) / 2; // No "floor" needed as terms are ints (C# auto truncates)
 
-                // BASIC OPS BELOW
                 // Found? return true, otherwise adjust search window (lower or greater half)
-                if (member.CompareTo(members[mid]) == 0) return true;
-                else if (member.CompareTo(members[mid]) == -1) max = mid - 1;
+                if (member.CompareTo(members[mid]) == 0) return true;           // BASIC OP
+                else if (member.CompareTo(members[mid]) == -1) max = mid - 1;   // BASIC OP AGAIN
                 else min = mid + 1;
             }
         }
