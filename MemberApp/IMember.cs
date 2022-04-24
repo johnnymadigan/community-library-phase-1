@@ -46,39 +46,36 @@ interface IMember
     //                 return +1, of this member's full name is greater than another's full name in dictionary order
     public int CompareTo(IMember member);
 
-
+    // █░█ ▄▀█ █░░ █ █▀▄   █▀█ █░█ █▀█ █▄░█ █▀▀
+    // ▀▄▀ █▀█ █▄▄ █ █▄▀   █▀▀ █▀█ █▄█ █░▀█ ██▄ @author: Johnny Madigan
     // Check if a contact phone number is valid. A contact phone number is valid if it has 10 digits and the first digit is 0.
     // Pre-condition: nil
     // Post-condition: return true, if the phone number id valid; retuns false otherwise.
     public static bool IsValidContactNumber(string phonenumber)
     {
-        // █░█ ▄▀█ █░░ █ █▀▄   █▀█ █░█ █▀█ █▄░█ █▀▀
-        // ▀▄▀ █▀█ █▄▄ █ █▄▀   █▀▀ █▀█ █▄█ █░▀█ ██▄ @author: Johnny Madigan
-
         int n = phonenumber.Length;
 
         if (n == 10 && phonenumber[0] == '0') {
             for (int i = 0; i < n; i++)
-                if (!char.IsDigit(phonenumber[i])) return false; // BASIC OP (most frequent/impactful in worst-case)
+                if (!char.IsDigit(phonenumber[i])) return false; // BASIC OP (most impactful in worst-case)
             return true;
         }
         else return false;
     }
 
+    // █░█ ▄▀█ █░░ █ █▀▄   █▀█ █ █▄░█
+    // ▀▄▀ █▀█ █▄▄ █ █▄▀   █▀▀ █ █░▀█ @author: Johnny Madigan
     // Check if a pin is valid. A pin is valid if it is a number which has a minimal of 4 and a maximal of 6 digits.
     // Pre-condition: nil
     // Post-condition: return true, if the pin valid; retuns false otherwise.
     public static bool IsValidPin(string pin)
     {
-        // █░█ ▄▀█ █░░ █ █▀▄   █▀█ █ █▄░█
-        // ▀▄▀ █▀█ █▄▄ █ █▄▀   █▀▀ █ █░▀█ @author: Johnny Madigan
-
         int n = pin.Length;
 
         if (n >= 4 && n <= 6)
         {
             for (int i = 0; i < n; i++)
-                if (!char.IsDigit(pin[i])) return false; // BASIC OP (most frequent/impactful in worst-case)
+                if (!char.IsDigit(pin[i])) return false; // BASIC OP (most impactful in worst-case)
             return true;
         }
         else return false;
